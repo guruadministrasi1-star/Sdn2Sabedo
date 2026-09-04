@@ -1,0 +1,1947 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SDN 2 Sabedo - Portal Pendidikan Terpadu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap');
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background-color: #f8fafc;
+            color: #1e293b;
+            overflow-x: hidden;
+        }
+        .view-section {
+            display: none;
+            min-height: 100vh;
+        }
+        .view-section.active {
+            display: flex;
+            flex-direction: column;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+    <section id="view-landing" class="view-section active justify-between p-6 md:p-12 text-center bg-gradient-to-br from-blue-900 via-indigo-900 to-slate-900 text-white">
+        <div class="max-w-4xl mx-auto my-auto py-12">
+            <span class="bg-blue-500/20 text-blue-300 text-xs md:text-sm font-semibold px-4 py-1.5 rounded-full border border-blue-400/30 uppercase tracking-widest">Portal Akademik Resmi</span>
+            <h1 class="text-4xl md:text-6xl font-extrabold mt-6 tracking-tight">SDN 2 SABEDO</h1>
+            <p class="text-lg md:text-xl font-medium text-blue-200 mt-3">Sistem Akademik & Penilaian Kurikulum Merdeka</p>
+            <div class="mt-4 inline-block bg-white/10 backdrop-blur-md px-6 py-2 rounded-xl border border-white/10">
+                <p class="italic text-amber-300 font-medium text-sm md:text-base">"Berikan warna pada masa depan"</p>
+            </div>
+            
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4 flex-wrap">
+                <button onclick="switchView('view-login-guru')" class="bg-blue-600 hover:bg-blue-500 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-all duration-200">
+                    Login Guru Kelas
+                </button>
+                <button onclick="switchView('view-login-mapel')" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3.5 px-8 rounded-xl shadow-lg transition-all duration-200">
+                    Login Guru Mapel (Agama, PJOK, B. Inggris)
+                </button>
+                <button onclick="switchView('view-login-siswa')" class="bg-white/10 hover:bg-white/20 text-white border border-white/20 font-bold py-3.5 px-8 rounded-xl backdrop-blur-md transition-all duration-200">
+                    Login Siswa
+                </button>
+            </div>
+        </div>
+        <div class="text-xs text-slate-400">© 2026 SDN 2 Sabedo • All Rights Reserved</div>
+    </section>
+
+    <section id="view-login-guru" class="view-section items-center justify-center p-6 bg-slate-900 text-white">
+        <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-md">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold">Login Guru Kelas</h2>
+                <p class="text-slate-400 text-sm mt-1">Masukkan kredensial pengajar</p>
+            </div>
+            <div id="alert-guru" class="hidden mb-4 p-3 rounded-xl text-sm font-medium text-center"></div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Username</label>
+                    <input type="text" id="username-guru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500" placeholder="Masukkan username">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="password-guru" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-blue-500" placeholder="Masukkan password">
+                </div>
+                <button onclick="handleLoginGuru()" class="w-full bg-blue-600 hover:bg-blue-500 font-bold py-3 rounded-xl shadow-lg transition duration-200 mt-2">Masuk Ruang Kelas</button>
+            </div>
+            <button onclick="switchView('view-landing')" class="w-full mt-4 text-sm text-slate-400 hover:text-white transition">Kembali ke Beranda</button>
+        </div>
+    </section>
+
+    <section id="view-login-mapel" class="view-section items-center justify-center p-6 bg-slate-900 text-white">
+        <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-md">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold">Login Guru Mata Pelajaran</h2>
+                <p class="text-slate-400 text-sm mt-1">Agama, PJOK, & Bahasa Inggris</p>
+            </div>
+            <div id="alert-mapel" class="hidden mb-4 p-3 rounded-xl text-sm font-medium text-center"></div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Username Guru</label>
+                    <input type="text" id="username-mapel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500" placeholder="Masukkan username">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="password-mapel" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-indigo-500" placeholder="Masukkan password">
+                </div>
+                <button onclick="handleLoginMapel()" class="w-full bg-indigo-600 hover:bg-indigo-500 font-bold py-3 rounded-xl shadow-lg transition duration-200 mt-2">Masuk Dashboard Guru Mapel</button>
+            </div>
+            <button onclick="switchView('view-landing')" class="w-full mt-4 text-sm text-slate-400 hover:text-white transition">Kembali ke Beranda</button>
+        </div>
+    </section>
+
+    <section id="view-login-siswa" class="view-section items-center justify-center p-6 bg-slate-900 text-white">
+        <div class="bg-slate-800 p-8 rounded-2xl shadow-2xl border border-slate-700 w-full max-w-md">
+            <div class="text-center mb-6">
+                <h2 class="text-2xl font-bold">Login Siswa</h2>
+                <p class="text-slate-400 text-sm mt-1">Masukkan akun siswa yang telah dibagikan</p>
+            </div>
+            <div id="alert-siswa" class="hidden mb-4 p-3 rounded-xl text-sm font-medium text-center"></div>
+            <div class="space-y-4">
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Username Siswa</label>
+                    <input type="text" id="username-siswa" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500" placeholder="Masukkan username siswa">
+                </div>
+                <div>
+                    <label class="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">Password</label>
+                    <input type="password" id="password-siswa" class="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-3 text-white focus:outline-none focus:border-emerald-500" placeholder="Masukkan password rahasia">
+                </div>
+                <button onclick="handleLoginSiswa()" class="w-full bg-emerald-600 hover:bg-emerald-500 font-bold py-3 rounded-xl shadow-lg transition duration-200 mt-2">Masuk ke Portal Siswa</button>
+            </div>
+            <button onclick="switchView('view-landing')" class="w-full mt-4 text-sm text-slate-400 hover:text-white transition">Kembali ke Beranda</button>
+        </div>
+    </section>
+
+    <section id="view-ruang-kelas" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-6 mb-8 gap-4">
+            <div>
+                <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Dashboard Guru Kelas</span>
+                <h2 class="text-2xl md:text-3xl font-extrabold text-slate-900">Ruang Kelas Utama</h2>
+            </div>
+            <button onclick="switchView('view-landing')" class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold px-4 py-2 rounded-xl text-sm transition">Keluar Akun</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div onclick="switchView('view-presensi')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold mb-4">📅</div>
+                <h3 class="text-lg font-bold text-slate-900">Presensi Hari Ini</h3>
+                <p class="text-slate-500 text-sm mt-1">Catat kehadiran siswa secara real-time.</p>
+            </div>
+            <div onclick="switchView('view-rekap-presensi')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold mb-4">📊</div>
+                <h3 class="text-lg font-bold text-slate-900">Rekap Presensi</h3>
+                <p class="text-slate-500 text-sm mt-1">Analisis total hari hadir, sakit, izin, dan alpa siswa.</p>
+            </div>
+            <div onclick="switchView('view-penilaian')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold mb-4">📝</div>
+                <h3 class="text-lg font-bold text-slate-900">Penilaian</h3>
+                <p class="text-slate-500 text-sm mt-1">Input nilai pengetahuan & keterampilan.</p>
+            </div>
+            <div onclick="switchView('view-rekap-nilai')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold mb-4">📈</div>
+                <h3 class="text-lg font-bold text-slate-900">Rekap Penilaian</h3>
+                <p class="text-slate-500 text-sm mt-1">Perhitungan akhir nilai seluruh mapel.</p>
+            </div>
+            <div onclick="switchView('view-analisis')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-purple-50 text-purple-600 flex items-center justify-center text-xl font-bold mb-4">🔍</div>
+                <h3 class="text-lg font-bold text-slate-900">Analisis Nilai Siswa</h3>
+                <p class="text-slate-500 text-sm mt-1">Analisis rata-rata real-time & lampau serta ranking.</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-ruang-kelas-mapel" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-6 mb-8 gap-4">
+            <div>
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider" id="label-mapel-dashboard-sub">Dashboard Guru Mapel</span>
+                <h2 id="sapaan-guru-mapel" class="text-2xl md:text-3xl font-extrabold text-slate-900">Selamat datang, Guru Mapel</h2>
+            </div>
+            <button onclick="switchView('view-landing')" class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold px-4 py-2 rounded-xl text-sm transition">Keluar</button>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <div onclick="switchView('view-presensi')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center text-xl font-bold mb-4">📅</div>
+                <h3 class="text-lg font-bold text-slate-900">Presensi Hari Ini</h3>
+                <p class="text-slate-500 text-sm mt-1">Catat kehadiran siswa secara mandiri.</p>
+            </div>
+            <div onclick="switchView('view-rekap-presensi')" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-indigo-50 text-indigo-600 flex items-center justify-center text-xl font-bold mb-4">📊</div>
+                <h3 class="text-lg font-bold text-slate-900">Rekap Presensi</h3>
+                <p class="text-slate-500 text-sm mt-1">Tinjau rekap presensi mapel Anda.</p>
+            </div>
+            <div onclick="bukaSetupPenilaianMapelKhusus()" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-amber-50 text-amber-600 flex items-center justify-center text-xl font-bold mb-4">📝</div>
+                <h3 class="text-lg font-bold text-slate-900">Penilaian</h3>
+                <p class="text-slate-500 text-sm mt-1">Setup & input nilai mapel yang diampu.</p>
+            </div>
+            <div onclick="bukaRekapKhususMapel()" class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-indigo-500 hover:shadow-md cursor-pointer transition-all">
+                <div class="w-12 h-12 rounded-xl bg-emerald-50 text-emerald-600 flex items-center justify-center text-xl font-bold mb-4">📈</div>
+                <h3 class="text-lg font-bold text-slate-900">Rekap Penilaian</h3>
+                <p class="text-slate-500 text-sm mt-1">Arsip nilai mapel Anda (sinkron ke Andri).</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-setup-pengetahuan-mapel" class="view-section p-6 md:p-10 max-w-4xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider" id="label-setup-mapel-title">Setup Penilaian</span>
+                <h2 class="text-xl font-bold text-slate-900">Setup Penilaian Pengetahuan & Keterampilan</h2>
+            </div>
+            <button onclick="kembaliKeDashboardAktif()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div id="alert-setup-mapel" class="hidden mb-4 p-3 rounded-xl text-sm font-medium text-center bg-rose-500/20 text-rose-300 border border-rose-500/30"></div>
+
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 mb-6 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Taksonomi SOLO (Pengetahuan)</label>
+                <select id="mapel-solo-pen" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+                    <option>Unistruktural</option><option>Multistruktural</option><option>Relasional</option><option>Abstrak Diperluas</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Pilih Jenis Penilaian Pengetahuan (Bisa Lebih dari Satu)</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pen-mapel" value="Pilihan Ganda" onchange="toggleMapelSetupSoal()" class="w-4 h-4 text-indigo-600"> Pilihan Ganda</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pen-mapel" value="Isian Singkat" onchange="toggleMapelSetupSoal()" class="w-4 h-4 text-indigo-600"> Isian Singkat</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pen-mapel" value="Uraian" onchange="toggleMapelSetupSoal()" class="w-4 h-4 text-indigo-600"> Uraian</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pen-mapel" value="Tes Lisan" onchange="toggleMapelSetupSoal()" class="w-4 h-4 text-indigo-600"> Tes Lisan</label>
+                </div>
+            </div>
+            <div id="container-mapel-soal-pen" class="space-y-3"></div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tujuan Pembelajaran Pengetahuan</label>
+                <input type="text" id="tp-pen-mapel" placeholder="Wajib diisi..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+            </div>
+
+            <hr class="my-4">
+
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Taksonomi SOLO (Keterampilan)</label>
+                <select id="mapel-solo-ket" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+                    <option>Unistruktural</option><option>Multistruktural</option><option>Relasional</option><option>Abstrak Diperluas</option>
+                </select>
+            </div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Pilih Jenis Penilaian Keterampilan (Bisa Lebih dari Satu)</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-ket-mapel" value="Praktik Langsung" onchange="toggleMapelSetupSoalKet()" class="w-4 h-4 text-indigo-600"> Praktik Langsung</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-ket-mapel" value="Produk / Hasil Karya" onchange="toggleMapelSetupSoalKet()" class="w-4 h-4 text-indigo-600"> Produk / Karya</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-ket-mapel" value="Proyek" onchange="toggleMapelSetupSoalKet()" class="w-4 h-4 text-indigo-600"> Proyek</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-ket-mapel" value="Presentasi" onchange="toggleMapelSetupSoalKet()" class="w-4 h-4 text-indigo-600"> Presentasi</label>
+                </div>
+            </div>
+            <div id="container-mapel-soal-ket" class="space-y-3"></div>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tujuan Pembelajaran Keterampilan</label>
+                <input type="text" id="tp-ket-mapel" placeholder="Wajib diisi..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+            </div>
+
+            <div class="flex justify-end pt-4">
+                <button onclick="lanjutKeLembarPenilaianMapel()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Mulai Penilaian Siswa →</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-form-penilaian-mapel" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-mapel-aktif-mapel" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Mata Pelajaran</span>
+                <h2 class="text-xl font-bold text-slate-900">Lembar Penilaian Siswa</h2>
+                <div class="flex items-center gap-3 mt-1 flex-wrap">
+                    <p id="live-datetime-mapel" class="text-xs text-slate-500 font-semibold">Waktu</p>
+                    <button onclick="bukaModalRekapUlangMapel()" class="text-xs bg-amber-50 text-amber-600 px-3 py-1 rounded-lg font-bold border border-amber-200 hover:bg-amber-100">Rekap Ulang</button>
+                    <button onclick="pindahKeHariIniMapel()" class="text-xs bg-emerald-50 text-emerald-600 px-3 py-1 rounded-lg font-bold border border-emerald-200 hover:bg-emerald-100">Hari Ini</button>
+                </div>
+            </div>
+            <button onclick="switchView('view-setup-pengetahuan-mapel')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Setup</button>
+        </div>
+
+        <div class="bg-white p-4 rounded-xl border border-slate-200 mb-6 flex flex-wrap gap-4 items-center justify-between">
+            <div class="flex items-center gap-3">
+                <label class="block text-xs font-bold text-slate-600 uppercase">Tanggal Aktif Rekap:</label>
+                <input type="date" id="input-tanggal-mapel-aktif" onchange="gantiTanggalMapelAktif(this.value)" class="bg-slate-50 border border-slate-300 rounded-xl px-3 py-2 text-sm text-slate-700 font-bold">
+            </div>
+            <span class="text-xs text-slate-400 italic">History aman tersimpan otomatis.</span>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto mb-6">
+            <table class="w-full text-left border-collapse min-w-[700px]">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                        <th class="p-4 border-r">No</th>
+                        <th class="p-4 border-r">Nama Siswa</th>
+                        <th class="p-4 text-center">Pengetahuan (Soal)</th>
+                        <th class="p-4 text-center">Keterampilan (Soal)</th>
+                        <th class="p-4 text-center">Nilai Akhir (%)</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-penilaian-mapel-body" class="divide-y divide-slate-100 text-sm"></tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="simpanNilaiMapelGuruTetap()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Simpan</button>
+        </div>
+    </section>
+
+    <div id="modal-rekap-ulang-mapel" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full space-y-4">
+            <h3 class="text-xl font-bold text-slate-900">Rekap Ulang Masa Lampau</h3>
+            <p class="text-xs text-slate-500">Pilih tanggal untuk melakukan rekap ulang arsip penilaian.</p>
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Pilih Tanggal</label>
+                <input type="date" id="modal-tanggal-rekap-ulang" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+            </div>
+            <div class="flex justify-end gap-3 pt-2">
+                <button onclick="document.getElementById('modal-rekap-ulang-mapel').classList.add('hidden')" class="bg-slate-100 text-slate-700 font-bold px-4 py-2.5 rounded-xl text-sm">Batal</button>
+                <button onclick="prosesRekapUlangMapelMulai()" class="bg-indigo-600 text-white font-bold px-6 py-2.5 rounded-xl text-sm">Rekap Sekarang</button>
+            </div>
+        </div>
+    </div>
+
+    <section id="view-rekap-khusus-mapel" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-rekap-khusus-mapel-title" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Rekap Nilai Mapel</span>
+                <h2 class="text-xl font-bold text-slate-900">Arsip Penilaian Mata Pelajaran</h2>
+            </div>
+            <button onclick="kembaliKeDashboardAktif()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center gap-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Pilih Tanggal / Bulan / Tahun Arsip</label>
+                <input type="date" id="input-rekap-mapel-arsip-tgl" onchange="renderRekapKhususMapel()" class="bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm text-slate-700 focus:outline-none focus:border-indigo-500">
+            </div>
+            <div class="self-end">
+                <button onclick="renderRekapKhususMapel()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">Lihat Rekap</button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                            <th class="p-4">No</th>
+                            <th class="p-4">Nama Siswa</th>
+                            <th class="p-4 text-center">Nilai Rata-rata Arsip</th>
+                            <th class="p-4 text-center">Tanggal Penilaian</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-rekap-khusus-mapel-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-presensi" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Presensi Siswa</h2>
+                <p id="live-datetime" class="text-sm text-slate-500 mt-0.5">Memuat waktu real-time...</p>
+            </div>
+            <button onclick="kembaliKeDashboardAktif()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div class="flex gap-3 mb-4">
+            <button onclick="setAllPresensi('Hadir')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase transition">Hadir Semua</button>
+            <button onclick="setAllPresensi('Libur')" class="bg-amber-600 hover:bg-amber-500 text-white px-4 py-2 rounded-xl text-xs font-bold uppercase transition">Libur</button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                        <th class="p-4">No</th>
+                        <th class="p-4">Nama Siswa</th>
+                        <th class="p-4 text-center">Status Kehadiran</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-presensi-body" class="divide-y divide-slate-100 text-sm"></tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="simpanPresensi()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Simpan Presensi</button>
+        </div>
+    </section>
+
+    <section id="view-rekap-presensi" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Rekap Presensi & Analisis Kehadiran</h2>
+                <p id="rekap-presensi-today-info" class="text-sm text-slate-500">Tanggal Hari Ini: -</p>
+            </div>
+            <button onclick="kembaliKeDashboardAktif()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center gap-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Tanggal Hari Ini</label>
+                <input type="text" id="display-tanggal-hari-ini" readonly class="bg-slate-100 border border-slate-300 rounded-xl px-4 py-2 text-sm text-slate-700 font-bold">
+            </div>
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Pilih Tanggal Rekap</label>
+                <input type="date" id="input-rekap-tanggal" class="bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm text-slate-700 focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="self-end">
+                <button onclick="bukaRekapLampau()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">Rekap Sekarang</button>
+            </div>
+            <div class="self-end ml-auto">
+                <button onclick="bukaAnalisisKehadiran()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">Analisis Hari Kehadiran Siswa</button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                        <th class="p-4">No</th>
+                        <th class="p-4">Nama Siswa</th>
+                        <th class="p-4 text-center">Status Kehadiran Tercatat</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-rekap-presensi-body" class="divide-y divide-slate-100 text-sm"></tbody>
+            </table>
+        </div>
+    </section>
+
+    <div id="modal-analisis-kehadiran" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-4xl w-full max-h-[90vh] overflow-y-auto space-y-4">
+            <div class="flex justify-between items-center border-b pb-3">
+                <h3 class="text-xl font-bold text-slate-900">Analisis Akumulasi Hari Kehadiran Siswa</h3>
+                <button onclick="document.getElementById('modal-analisis-kehadiran').classList.add('hidden')" class="text-slate-400 hover:text-slate-600 font-bold">✕</button>
+            </div>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b text-xs font-bold text-slate-600 uppercase">
+                            <th class="p-3">No</th>
+                            <th class="p-3">Nama Siswa</th>
+                            <th class="p-3 text-center text-emerald-600">Hadir</th>
+                            <th class="p-3 text-center text-amber-600">Sakit</th>
+                            <th class="p-3 text-center text-blue-600">Izin</th>
+                            <th class="p-3 text-center text-rose-600">Tanpa Keterangan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-analisis-kehadiran-body" class="divide-y text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <section id="view-form-rekap-lampau" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-tanggal-rekap" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Tanggal</span>
+                <h2 class="text-xl font-bold text-slate-900">Form Rekap Ulang Masa Lampau</h2>
+            </div>
+            <button onclick="saveAndSwitch('view-form-rekap-lampau', 'view-rekap-presensi')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-6">
+            <table class="w-full text-left border-collapse">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                        <th class="p-4">No</th>
+                        <th class="p-4">Nama Siswa</th>
+                        <th class="p-4 text-center">Pilih Status Presensi Tanggal Terpilih</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-form-rekap-lampau-body" class="divide-y divide-slate-100 text-sm"></tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="simpanRekapLampau()" class="bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Simpan Rekap Lampau</button>
+        </div>
+    </section>
+
+    <section id="view-penilaian" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Modul Penilaian Siswa</h2>
+                <p class="text-sm text-slate-500">Pilih mata pelajaran untuk mulai menilai</p>
+            </div>
+            <button onclick="switchView('view-ruang-kelas')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div id="pilihan-mapel-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+    </section>
+
+    <section id="view-setup-pengetahuan" class="view-section p-6 md:p-10 max-w-4xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-mapel-pengetahuan" class="text-xs font-bold text-blue-600 uppercase tracking-wider">Mata Pelajaran</span>
+                <h2 class="text-xl font-bold text-slate-900">Setup Penilaian Pengetahuan</h2>
+            </div>
+            <button onclick="saveAndSwitch('view-setup-pengetahuan', 'view-penilaian')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div id="alert-setup-pengetahuan" class="hidden mb-4 p-3 rounded-xl text-sm font-medium text-center bg-rose-500/20 text-rose-300 border border-rose-500/30"></div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200 mb-6 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Taksonomi SOLO (Pengetahuan)</label>
+                <select id="solo-pengetahuan" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+                    <option>Unistruktural</option><option>Multistruktural</option><option>Relasional</option><option>Abstrak Diperluas</option>
+                </select>
+            </div>
+            
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Pilih Jenis Penilaian (Bisa Lebih dari Satu)</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pengetahuan" value="Pilihan Ganda" onchange="toggleSetupSoalInputs()" class="w-4 h-4 text-blue-600"> Pilihan Ganda</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pengetahuan" value="Isian Singkat" onchange="toggleSetupSoalInputs()" class="w-4 h-4 text-blue-600"> Isian Singkat</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pengetahuan" value="Uraian" onchange="toggleSetupSoalInputs()" class="w-4 h-4 text-blue-600"> Uraian</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-pengetahuan" value="Tes Lisan" onchange="toggleSetupSoalInputs()" class="w-4 h-4 text-blue-600"> Tes Lisan</label>
+                </div>
+            </div>
+
+            <div id="container-input-soal-pengetahuan" class="space-y-3"></div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tujuan Pembelajaran Pengetahuan</label>
+                <input type="text" id="tujuan-pembelajaran-pengetahuan" placeholder="Wajib diisi..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="lanjutKeSetupKeterampilan()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Lanjut ke Keterampilan →</button>
+        </div>
+    </section>
+
+    <section id="view-setup-keterampilan" class="view-section p-6 md:p-10 max-w-4xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-mapel-keterampilan" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Mata Pelajaran</span>
+                <h2 class="text-xl font-bold text-slate-900">Setup Penilaian Keterampilan</h2>
+            </div>
+            <button onclick="saveAndSwitch('view-setup-keterampilan', 'view-setup-pengetahuan')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div id="alert-setup-keterampilan" class="hidden mb-4 p-3 rounded-xl text-sm font-medium text-center bg-rose-500/20 text-rose-300 border border-rose-500/30"></div>
+
+        <div class="bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-slate-200 mb-6 space-y-4">
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Taksonomi SOLO (Keterampilan)</label>
+                <select id="solo-keterampilan" class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+                    <option>Unistruktural</option><option>Multistruktural</option><option>Relasional</option><option>Abstrak Diperluas</option>
+                </select>
+            </div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-2">Pilih Jenis Penilaian Keterampilan (Bisa Lebih dari Satu)</label>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-keterampilan" value="Praktik Langsung" onchange="toggleSetupSoalKetInputs()" class="w-4 h-4 text-indigo-600"> Praktik Langsung</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-keterampilan" value="Produk / Hasil Karya" onchange="toggleSetupSoalKetInputs()" class="w-4 h-4 text-indigo-600"> Produk / Karya</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-keterampilan" value="Proyek" onchange="toggleSetupSoalKetInputs()" class="w-4 h-4 text-indigo-600"> Proyek</label>
+                    <label class="flex items-center gap-2 p-3 bg-slate-50 border rounded-xl cursor-pointer text-sm font-medium"><input type="checkbox" name="jenis-keterampilan" value="Presentasi" onchange="toggleSetupSoalKetInputs()" class="w-4 h-4 text-indigo-600"> Presentasi</label>
+                </div>
+            </div>
+
+            <div id="container-input-soal-keterampilan" class="space-y-3"></div>
+
+            <div>
+                <label class="block text-xs font-bold text-slate-600 uppercase mb-1">Tujuan Pembelajaran Keterampilan</label>
+                <input type="text" id="tujuan-pembelajaran-keterampilan" placeholder="Wajib diisi..." class="w-full bg-slate-50 border border-slate-300 rounded-xl p-3 text-sm">
+            </div>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="lanjutKeInputPengetahuanSiswa()" class="bg-emerald-600 hover:bg-emerald-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Lanjut ke Penilaian Pengetahuan →</button>
+        </div>
+    </section>
+
+    <section id="view-form-penilaian-pengetahuan" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-mapel-eksekusi-pen" class="text-xs font-bold text-blue-600 uppercase tracking-wider">Mata Pelajaran</span>
+                <h2 class="text-xl font-bold text-slate-900">Lembar Penilaian Pengetahuan Siswa</h2>
+            </div>
+            <div class="flex gap-2">
+                <button onclick="switchView('view-setup-keterampilan')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+                <button onclick="lanjutKePenilaianKeterampilan()" class="bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl text-sm font-semibold transition">Buka Lembar Keterampilan →</button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto mb-6">
+            <table class="w-full text-left border-collapse min-w-[700px]">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                        <th class="p-4">No</th>
+                        <th class="p-4">Nama Siswa</th>
+                        <th class="p-4 text-center" id="header-kolom-soal-pengetahuan">Butir Soal Pengetahuan</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-penilaian-pengetahuan-body" class="divide-y divide-slate-100 text-sm"></tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="lanjutKePenilaianKeterampilan()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Simpan & Ke Lembar Keterampilan →</button>
+        </div>
+    </section>
+
+    <section id="view-form-penilaian-keterampilan" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="label-mapel-eksekusi-ket" class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Mata Pelajaran</span>
+                <h2 class="text-xl font-bold text-slate-900">Lembar Penilaian Keterampilan Siswa</h2>
+            </div>
+            <button onclick="switchView('view-form-penilaian-pengetahuan')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali ke Pengetahuan</button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-x-auto mb-6">
+            <table class="w-full text-left border-collapse min-w-[700px]">
+                <thead>
+                    <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                        <th class="p-4">No</th>
+                        <th class="p-4">Nama Siswa</th>
+                        <th class="p-4 text-center" id="header-kolom-soal-keterampilan">Butir Soal Keterampilan</th>
+                    </tr>
+                </thead>
+                <tbody id="tabel-penilaian-keterampilan-body" class="divide-y divide-slate-100 text-sm"></tbody>
+            </table>
+        </div>
+
+        <div class="flex justify-end">
+            <button onclick="simpanFinalNilaiAndri()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-8 py-3 rounded-xl shadow-md transition">Simpan & Kirim ke Rekap</button>
+        </div>
+    </section>
+
+    <section id="view-rekap-nilai" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-4 mb-6 gap-4">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Rekapitulasi Nilai Siswa</h2>
+                <p id="rekap-realtime-clock" class="text-sm text-slate-500">Memuat waktu real-time...</p>
+            </div>
+            <button onclick="kembaliKeDashboardAktif()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div class="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-wrap items-center gap-4">
+            <div>
+                <label class="block text-xs font-semibold text-slate-500 mb-1">Pilih Tanggal Masa Lampau</label>
+                <input type="date" id="input-rekap-nilai-tanggal" class="bg-slate-50 border border-slate-300 rounded-xl px-4 py-2 text-sm text-slate-700 focus:outline-none focus:border-blue-500">
+            </div>
+            <div class="self-end flex gap-2">
+                <button onclick="bukaRekapMapelSingle()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">Rekap Sekarang</button>
+                <button onclick="setRekapHariIni()" class="bg-slate-800 hover:bg-slate-700 text-white font-bold px-5 py-2.5 rounded-xl text-sm transition shadow-sm">Hari Ini</button>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[700px]">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase" id="header-rekap-nilai-table"></tr>
+                    </thead>
+                    <tbody id="tabel-rekap-nilai-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <div id="modal-detail-nilai" class="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white p-8 rounded-2xl shadow-2xl max-w-md w-full space-y-4">
+            <h3 id="modal-detail-title" class="text-xl font-bold text-slate-900">Detail Penilaian</h3>
+            <div id="modal-detail-content" class="bg-slate-50 p-4 rounded-xl border space-y-2 text-sm"></div>
+            <div class="flex justify-end pt-2">
+                <button onclick="document.getElementById('modal-detail-nilai').classList.add('hidden')" class="bg-indigo-600 text-white font-bold px-5 py-2.5 rounded-xl text-sm">Tutup</button>
+            </div>
+        </div>
+    </div>
+
+    <section id="view-analisis" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <h2 class="text-xl font-bold text-slate-900">Analisis Nilai Siswa</h2>
+                <p class="text-sm text-slate-500">Rata-rata akumulatif real-time dan lampau</p>
+            </div>
+            <button onclick="switchView('view-ruang-kelas')" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div class="mb-6 flex justify-end gap-3">
+            <button onclick="hitungDanTampilkanRangking()" class="bg-purple-600 hover:bg-purple-500 text-white font-bold px-6 py-3 rounded-xl shadow-md transition">Analisis Ranking Sekarang</button>
+            <button onclick="hapusAnalisisRangking()" class="bg-rose-600 hover:bg-rose-500 text-white font-bold px-6 py-3 rounded-xl shadow-md transition">Hapus Analisis Ranking</button>
+        </div>
+
+        <div class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden mb-8">
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse min-w-[800px]">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                            <th class="p-4">No</th>
+                            <th class="p-4">Nama Siswa</th>
+                            <th class="p-4 text-center">Pancasila</th>
+                            <th class="p-4 text-center">Matematika</th>
+                            <th class="p-4 text-center">IPAS</th>
+                            <th class="p-4 text-center">B. Indonesia</th>
+                            <th class="p-4 text-center">Seni Rupa</th>
+                            <th class="p-4 text-center">Mulok</th>
+                            <th class="p-4 text-center">Agama</th>
+                            <th class="p-4 text-center">PJOK</th>
+                            <th class="p-4 text-center">B. Inggris</th>
+                            <th class="p-4 text-center font-bold text-blue-600">Rata-rata Rapor</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-analisis-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                </table>
+            </div>
+        </div>
+
+        <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-200">
+            <h3 class="text-lg font-bold text-slate-900 mb-4">Peringkat / Ranking Siswa</h3>
+            <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                            <th class="p-3">Peringkat</th>
+                            <th class="p-3">Nama Siswa</th>
+                            <th class="p-3 text-center">Rata-rata Keseluruhan</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabel-ranking-body" class="divide-y divide-slate-100 text-sm">
+                        <tr><td colspan="3" class="p-4 text-center text-slate-400">Belum ada analisis ranking yang ditampilkan.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-portal-siswa" class="view-section p-6 md:p-10 max-w-6xl mx-auto w-full">
+        <div class="flex flex-col md:flex-row justify-between items-start md:items-center border-b border-slate-200 pb-6 mb-6 gap-4">
+            <div>
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Portal Siswa</span>
+                <h2 id="nama-siswa-login" class="text-2xl font-extrabold text-slate-900">Nama Siswa</h2>
+            </div>
+            <button onclick="switchView('view-landing')" class="bg-rose-50 text-rose-600 hover:bg-rose-100 font-semibold px-4 py-2 rounded-xl text-sm transition">Keluar</button>
+        </div>
+
+        <div class="bg-emerald-50 border border-emerald-100 p-4 rounded-2xl mb-6 flex flex-col md:flex-row justify-between items-center gap-4">
+            <div>
+                <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Jadwal Hari Ini</span>
+                <h3 id="label-hari-ini" class="text-lg font-extrabold text-emerald-900 mt-0.5">Hari Ini: -</h3>
+            </div>
+            <div id="badge-jadwal-mapel" class="flex gap-2 flex-wrap"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <div class="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden p-6">
+                <h3 class="text-lg font-bold text-slate-900 mb-4">Nilai Mata Pelajaran (Klik untuk History)</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left border-collapse">
+                        <thead>
+                            <tr class="bg-slate-50 border-b border-slate-200 text-xs font-bold text-slate-600 uppercase">
+                                <th class="p-3">Mata Pelajaran</th>
+                                <th class="p-3 text-center">Nilai Akhir & Jenis Penilaian</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tabel-nilai-siswa-body" class="divide-y divide-slate-100 text-sm"></tbody>
+                    </table>
+                </div>
+            </div>
+            
+            <div class="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 flex flex-col justify-between">
+                <div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">Peringkat Kelas</h3>
+                    <p class="text-xs text-slate-500 mb-6">Posisi ranking Anda berdasarkan analisis guru.</p>
+                    <div class="bg-emerald-50 border border-emerald-100 rounded-2xl p-6 text-center">
+                        <span class="text-xs font-bold text-emerald-600 uppercase tracking-widest">Ranking Anda</span>
+                        <div id="badge-ranking" class="text-4xl font-extrabold text-emerald-700 mt-2">-</div>
+                    </div>
+                </div>
+                <div class="mt-6 pt-4 border-t border-slate-100 text-xs text-slate-400 text-center">
+                    SDN 2 Sabedo Academic System
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="view-history-siswa" class="view-section p-6 md:p-10 max-w-4xl mx-auto w-full">
+        <div class="flex justify-between items-center border-b border-slate-200 pb-4 mb-6">
+            <div>
+                <span id="history-mapel-title" class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Mata Pelajaran</span>
+                <h2 class="text-xl font-bold text-slate-900">Riwayat & Tanggal Penilaian</h2>
+            </div>
+            <button onclick="kembaliDariHistory()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl text-sm font-semibold transition">← Kembali</button>
+        </div>
+
+        <div id="container-history-card" class="space-y-4"></div>
+    </section>
+
+    <script>
+        const daftarSiswa = [
+            "Abdan Al Ghifari", "Ahmad Dani", "Aisyah Ayudia Inara", "Akil Muzaki",
+            "Arsya Ilan Diandra", "Azka Maulana", "Delisa nurani", "M Padil Aryadi",
+            "Muhammad Al Zikri", "Ridho haswan", "Rijal Andi putra", "Rohim ismul Akbar",
+            "Suci Ramadhani", "Yeni Yuliana", "Dika"
+        ];
+
+        const akunSiswaDB = [
+            {user: "abdan01", pass: "abd7x9", nama: "Abdan Al Ghifari"},
+            {user: "ahmad02", pass: "dan4k2", nama: "Ahmad Dani"},
+            {user: "aisyah03", pass: "ai3sz8", nama: "Aisyah Ayudia Inara"},
+            {user: "akil04", pass: "akl9p1", nama: "Akil Muzaki"},
+            {user: "arsya05", pass: "ars5q3", nama: "Arsya Ilan Diandra"},
+            {user: "azka06", pass: "azk8m4", nama: "Azka Maulana"},
+            {user: "delisa07", pass: "del2v6", nama: "Delisa nurani"},
+            {user: "padil08", pass: "pad6x1", nama: "M Padil Aryadi"},
+            {user: "zikri09", pass: "zik3y7", nama: "Muhammad Al Zikri"},
+            {user: "ridho10", pass: "rid5w2", nama: "Ridho haswan"},
+            {user: "rijal11", pass: "rij9n4", nama: "Rijal Andi putra"},
+            {user: "rohim12", pass: "roh1t8", nama: "Rohim ismul Akbar"},
+            {user: "suci13", pass: "suc4r5", nama: "Suci Ramadhani"},
+            {user: "yeni14", pass: "yen7y3", nama: "Yeni Yuliana"},
+            {user: "dika15", pass: "dik2d9", nama: "Dika"}
+        ];
+
+        const daftarMapelAndri = ["Pendidikan Pancasila", "Matematika", "IPAS", "Bahasa Indonesia", "Seni Rupa", "Mulok"];
+        const daftarMapelMapel = ["Pendidikan Agama", "PJOK", "Bahasa Inggris"];
+        const allMapelGlobal = [...daftarMapelAndri, ...daftarMapelMapel];
+
+        // Jadwal Terupdate: Rabu = PJOK (Tanpa Agama), Kamis = Agama (Tanpa PJOK)
+        const jadwalPelajaran = {
+            0: ["Mulok", "IPAS"], 
+            1: ["Matematika", "Bahasa Inggris", "Seni Rupa"], 
+            2: ["Bahasa Indonesia", "IPAS", "Matematika"], 
+            3: ["PJOK", "Bahasa Indonesia", "IPAS"], 
+            4: ["Pendidikan Agama", "Pendidikan Pancasila", "Bahasa Indonesia"], 
+            5: ["Seni Rupa", "Pendidikan Pancasila"], 
+            6: ["Mulok", "IPAS"] 
+        };
+
+        let presensiData = {}; 
+        let nilaiDataAndri = {}; 
+        let historyNilai = {}; 
+        let rankingGlobal = {}; 
+        let isRankingDisplayed = false;
+        let jenisInfoMapel = {}; 
+        
+        let activeMapelAndri = "";
+        let activeGuruMapel = null; 
+        let siswaLoggedIn = null;
+        let selectedLampauDate = "";
+        let historyAsalView = "portal"; 
+
+        window.onload = function() {
+            initPresensiHariIni();
+            initMapelPenilaian();
+            initRekapNilai();
+            initAnalisis();
+            
+            const todayStr = new Date().toISOString().split('T')[0];
+            document.getElementById('display-tanggal-hari-ini').value = todayStr;
+            document.getElementById('input-rekap-tanggal').value = todayStr;
+            document.getElementById('input-tanggal-mapel-aktif').value = todayStr;
+            document.getElementById('input-rekap-nilai-tanggal').value = todayStr;
+            document.getElementById('input-rekap-mapel-arsip-tgl').value = todayStr;
+            document.getElementById('rekap-presensi-today-info').innerText = `Tanggal Hari Ini: ${todayStr}`;
+            
+            updateJamRealTime();
+            setInterval(updateJamRealTime, 1000);
+        };
+
+        function updateJamRealTime() {
+            const now = new Date();
+            const options = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const tanggalStr = now.toLocaleDateString('id-ID', options);
+            const jamStr = now.toLocaleTimeString('id-ID');
+            
+            const el = document.getElementById('live-datetime');
+            const elRekap = document.getElementById('rekap-realtime-clock');
+            
+            const timeString = `${tanggalStr} — Pukul ${jamStr} WITA`;
+            if (el) el.innerText = timeString;
+            if (elRekap) elRekap.innerText = timeString;
+        }
+
+        function switchView(viewId) {
+            document.querySelectorAll('.view-section').forEach(sec => sec.classList.remove('active'));
+            document.getElementById(viewId).classList.add('active');
+            window.scrollTo(0, 0);
+            if(viewId === 'view-rekap-nilai') {
+                initRekapNilai();
+            } else if(viewId === 'view-analisis') {
+                initAnalisis();
+            } else if(viewId === 'view-rekap-khusus-mapel') {
+                renderRekapKhususMapel();
+            }
+        }
+
+        function saveAndSwitch(currentViewId, targetViewId) {
+            if (currentViewId === 'view-form-penilaian-pengetahuan' || currentViewId === 'view-form-penilaian-keterampilan') {
+                simpanFinalNilaiAndri(true);
+            } else if (currentViewId === 'view-presensi') {
+                simpanPresensi(true);
+            }
+            switchView(targetViewId);
+        }
+
+        function kembaliKeDashboardAktif() {
+            if (activeGuruMapel) {
+                switchView('view-ruang-kelas-mapel');
+            } else {
+                switchView('view-ruang-kelas');
+            }
+        }
+
+        function handleLoginGuru() {
+            const user = document.getElementById('username-guru').value.trim();
+            const pass = document.getElementById('password-guru').value.trim();
+            const alertBox = document.getElementById('alert-guru');
+
+            alertBox.classList.remove('hidden');
+            if (user === 'Andri' && pass === '12345') {
+                alertBox.className = "mb-4 p-3 rounded-xl text-sm font-medium text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                alertBox.innerText = "Password Benar! Memuat ruang kelas...";
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                    document.getElementById('username-guru').value = '';
+                    document.getElementById('password-guru').value = '';
+                    switchView('view-ruang-kelas');
+                }, 800);
+            } else {
+                alertBox.className = "mb-4 p-3 rounded-xl text-sm font-medium text-center bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                alertBox.innerText = "Password Salah! Akses ditolak.";
+            }
+        }
+
+        function handleLoginMapel() {
+            const user = document.getElementById('username-mapel').value.trim();
+            const pass = document.getElementById('password-mapel').value.trim();
+            const alertBox = document.getElementById('alert-mapel');
+
+            alertBox.classList.remove('hidden');
+            let guruData = null;
+            if (user === 'liza01' && pass === 'agama123') {
+                guruData = { nama: "Bu Liza Khairil Imtihan, S.Pd", mapel: "Pendidikan Agama", user: "liza01" };
+            } else if (user === 'zulkifli02' && pass === 'pjok123') {
+                guruData = { nama: "Pak Zulkifli, S.Pd", mapel: "PJOK", user: "zulkifli02" };
+            } else if (user === 'sriulfania03' && pass === 'english123') {
+                guruData = { nama: "Bu Sri Ulfania, S.Pd", mapel: "Bahasa Inggris", user: "sriulfania03" };
+            }
+
+            if (guruData) {
+                activeGuruMapel = guruData;
+                alertBox.className = "mb-4 p-3 rounded-xl text-sm font-medium text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                alertBox.innerText = `Login Berhasil! Selamat datang, ${guruData.nama}`;
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                    document.getElementById('username-mapel').value = '';
+                    document.getElementById('password-mapel').value = '';
+                    document.getElementById('sapaan-guru-mapel').innerText = `Selamat datang, ${guruData.nama}`;
+                    document.getElementById('label-mapel-dashboard-sub').innerText = `Dashboard Guru Mapel: ${guruData.mapel}`;
+                    
+                    const todayStr = getTodayKey();
+                    document.getElementById('input-tanggal-mapel-aktif').value = todayStr;
+                    document.getElementById('input-rekap-mapel-arsip-tgl').value = todayStr;
+                    switchView('view-ruang-kelas-mapel');
+                }, 800);
+            } else {
+                alertBox.className = "mb-4 p-3 rounded-xl text-sm font-medium text-center bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                alertBox.innerText = "Username atau Password Guru Mapel Salah!";
+            }
+        }
+
+        function handleLoginSiswa() {
+            const user = document.getElementById('username-siswa').value.trim();
+            const pass = document.getElementById('password-siswa').value.trim();
+            const alertBox = document.getElementById('alert-siswa');
+
+            const found = akunSiswaDB.find(s => s.user === user && s.pass === pass);
+            alertBox.classList.remove('hidden');
+
+            if (found) {
+                alertBox.className = "mb-4 p-3 rounded-xl text-sm font-medium text-center bg-emerald-500/20 text-emerald-300 border border-emerald-500/30";
+                alertBox.innerText = "Login Berhasil!";
+                siswaLoggedIn = found.nama;
+                setTimeout(() => {
+                    alertBox.classList.add('hidden');
+                    document.getElementById('username-siswa').value = '';
+                    document.getElementById('password-siswa').value = '';
+                    loadPortalSiswa(found.nama);
+                    switchView('view-portal-siswa');
+                }, 600);
+            } else {
+                alertBox.className = "mb-4 p-3 rounded-xl text-sm font-medium text-center bg-rose-500/20 text-rose-300 border border-rose-500/30";
+                alertBox.innerText = "Username atau Password Siswa Salah!";
+            }
+        }
+
+        function getTodayKey() {
+            return new Date().toISOString().split('T')[0];
+        }
+
+        function initPresensiHariIni() {
+            const today = getTodayKey();
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+            if (!presensiData[roleKey]) presensiData[roleKey] = {};
+            if (!presensiData[roleKey][today]) {
+                presensiData[roleKey][today] = new Array(daftarSiswa.length).fill('');
+            }
+            renderTabelPresensi(today);
+            renderTabelRekapPresensi(today);
+        }
+
+        function renderTabelPresensi(dateKey) {
+            const tbody = document.getElementById('tabel-presensi-body');
+            tbody.innerHTML = '';
+            const statuses = ["Hadir", "Izin", "Sakit", "Tanpa Keterangan", "Libur"];
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+
+            daftarSiswa.forEach((nama, idx) => {
+                const currentStatus = (presensiData[roleKey] && presensiData[roleKey][dateKey]) ? presensiData[roleKey][dateKey][idx] : '';
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                
+                let btnsHtml = statuses.map(st => {
+                    let active = currentStatus === st;
+                    let colorClass = active ? getActiveStatusColor(st) : "bg-slate-100 text-slate-600 hover:bg-slate-200";
+                    return `<button onclick="updatePresensiStatus('${dateKey}', ${idx}, '${st}')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition ${colorClass}">${st} ${active ? '✓' : ''}</button>`;
+                }).join(' ');
+
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-500">${idx + 1}</td>
+                    <td class="p-4 font-medium text-slate-900">${nama}</td>
+                    <td class="p-4 text-center flex justify-center gap-2 flex-wrap">${btnsHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function getActiveStatusColor(st) {
+            switch(st) {
+                case 'Hadir': return 'bg-emerald-600 text-white shadow-sm';
+                case 'Izin': return 'bg-blue-600 text-white shadow-sm';
+                case 'Sakit': return 'bg-amber-600 text-white shadow-sm';
+                case 'Tanpa Keterangan': return 'bg-rose-600 text-white shadow-sm';
+                case 'Libur': return 'bg-slate-600 text-white shadow-sm';
+                default: return 'bg-slate-200 text-slate-800';
+            }
+        }
+
+        function updatePresensiStatus(dateKey, index, status) {
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+            if (!presensiData[roleKey]) presensiData[roleKey] = {};
+            if (!presensiData[roleKey][dateKey]) presensiData[roleKey][dateKey] = new Array(daftarSiswa.length).fill('');
+            presensiData[roleKey][dateKey][index] = status;
+            renderTabelPresensi(dateKey);
+        }
+
+        function setAllPresensi(status) {
+            const today = getTodayKey();
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+            if (!presensiData[roleKey]) presensiData[roleKey] = {};
+            presensiData[roleKey][today] = new Array(daftarSiswa.length).fill(status);
+            renderTabelPresensi(today);
+        }
+
+        function simpanPresensi(isAuto = false) {
+            if (!isAuto) alert("Data presensi berhasil disimpan di tempatnya masing-masing!");
+            renderTabelRekapPresensi(getTodayKey());
+        }
+
+        function bukaRekapLampau() {
+            selectedLampauDate = document.getElementById('input-rekap-tanggal').value;
+            if (!selectedLampauDate) {
+                alert("Silakan pilih tanggal terlebih dahulu.");
+                return;
+            }
+            document.getElementById('label-tanggal-rekap').innerText = `Rekap Tanggal: ${selectedLampauDate}`;
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+            if (!presensiData[roleKey]) presensiData[roleKey] = {};
+            if (!presensiData[roleKey][selectedLampauDate]) {
+                presensiData[roleKey][selectedLampauDate] = new Array(daftarSiswa.length).fill('');
+            }
+            tempLampauPresensi = [...presensiData[roleKey][selectedLampauDate]];
+            renderTabelFormRekapLampau();
+            switchView('view-form-rekap-lampau');
+        }
+
+        function renderTabelFormRekapLampau() {
+            const tbody = document.getElementById('tabel-form-rekap-lampau-body');
+            tbody.innerHTML = '';
+            const statuses = ["Hadir", "Izin", "Sakit", "Tanpa Keterangan", "Libur"];
+
+            daftarSiswa.forEach((nama, idx) => {
+                let currentStatus = tempLampauPresensi[idx] || '';
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 transition";
+                
+                let btnsHtml = statuses.map(st => {
+                    let active = currentStatus === st;
+                    let colorClass = active ? getActiveStatusColor(st) : "bg-slate-100 text-slate-600 hover:bg-slate-200";
+                    return `<button onclick="updateTempLampauStatus(${idx}, '${st}')" class="px-3 py-1.5 rounded-lg text-xs font-bold transition ${colorClass}">${st} ${active ? '✓' : ''}</button>`;
+                }).join(' ');
+
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-500">${idx + 1}</td>
+                    <td class="p-4 font-medium text-slate-900">${nama}</td>
+                    <td class="p-4 text-center flex justify-center gap-2 flex-wrap">${btnsHtml}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function updateTempLampauStatus(index, status) {
+            tempLampauPresensi[index] = status;
+            renderTabelFormRekapLampau();
+        }
+
+        function simpanRekapLampau() {
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+            if (!presensiData[roleKey]) presensiData[roleKey] = {};
+            presensiData[roleKey][selectedLampauDate] = [...tempLampauPresensi];
+            alert("Data presensi berhasil disimpan di tempatnya masing-masing!");
+            renderTabelRekapPresensi(selectedLampauDate);
+            switchView('view-rekap-presensi');
+        }
+
+        function renderTabelRekapPresensi(dateKey) {
+            const tbody = document.getElementById('tabel-rekap-presensi-body');
+            tbody.innerHTML = '';
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+            const dataHariIni = (presensiData[roleKey] && presensiData[roleKey][dateKey]) ? presensiData[roleKey][dateKey] : new Array(daftarSiswa.length).fill('Belum Diabsen');
+
+            daftarSiswa.forEach((nama, idx) => {
+                let status = dataHariIni[idx] || 'Belum Diabsen';
+                let badgeColor = "bg-slate-100 text-slate-700";
+                if(status === 'Hadir') badgeColor = "bg-emerald-100 text-emerald-700";
+                else if(status === 'Sakit') badgeColor = "bg-amber-100 text-amber-700";
+                else if(status === 'Izin') badgeColor = "bg-blue-100 text-blue-700";
+                else if(status === 'Tanpa Keterangan') badgeColor = "bg-rose-100 text-rose-700";
+                else if(status === 'Libur') badgeColor = "bg-slate-200 text-slate-800";
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-500">${idx + 1}</td>
+                    <td class="p-4 font-medium text-slate-900">${nama}</td>
+                    <td class="p-4 text-center"><span class="px-3 py-1 rounded-full text-xs font-bold ${badgeColor}">${status}</span></td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function bukaAnalisisKehadiran() {
+            const tbody = document.getElementById('tabel-analisis-kehadiran-body');
+            tbody.innerHTML = '';
+            const roleKey = activeGuruMapel ? activeGuruMapel.user : 'Andri';
+
+            daftarSiswa.forEach((nama, idx) => {
+                let totalHadir = 0, totalSakit = 0, totalIzin = 0, totalAlpa = 0;
+                
+                if (presensiData[roleKey]) {
+                    Object.keys(presensiData[roleKey]).forEach(date => {
+                        let arr = presensiData[roleKey][date];
+                        if (arr && arr[idx]) {
+                            let st = arr[idx];
+                            if (st === 'Hadir') totalHadir++;
+                            else if (st === 'Sakit') totalSakit++;
+                            else if (st === 'Izin') totalIzin++;
+                            else if (st === 'Tanpa Keterangan') totalAlpa++;
+                        }
+                    });
+                }
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-semibold text-slate-500">${idx + 1}</td>
+                    <td class="p-3 font-medium text-slate-900">${nama}</td>
+                    <td class="p-3 text-center font-bold text-emerald-600">${totalHadir} Hari</td>
+                    <td class="p-3 text-center font-bold text-amber-600">${totalSakit} Hari</td>
+                    <td class="p-3 text-center font-bold text-blue-600">${totalIzin} Hari</td>
+                    <td class="p-3 text-center font-bold text-rose-600">${totalAlpa} Hari</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            document.getElementById('modal-analisis-kehadiran').classList.remove('hidden');
+        }
+
+        // --- GURU MAPEL PENILAIAN LOGIC ---
+        function bukaSetupPenilaianMapelKhusus() {
+            if (!activeGuruMapel) return;
+            activeMapelAndri = activeGuruMapel.mapel; // Hanya mapel yang diampu
+            document.getElementById('label-setup-mapel-title').innerText = `Setup Penilaian (${activeMapelAndri})`;
+            document.querySelectorAll('input[name="jenis-pen-mapel"]').forEach(cb => cb.checked = false);
+            document.querySelectorAll('input[name="jenis-ket-mapel"]').forEach(cb => cb.checked = false);
+            document.getElementById('container-mapel-soal-pen').innerHTML = '';
+            document.getElementById('container-mapel-soal-ket').innerHTML = '';
+            switchView('view-setup-pengetahuan-mapel');
+        }
+
+        function toggleMapelSetupSoal() {
+            const container = document.getElementById('container-mapel-soal-pen');
+            container.innerHTML = '';
+            const checked = document.querySelectorAll('input[name="jenis-pen-mapel"]:checked');
+            checked.forEach(cb => {
+                let div = document.createElement('div');
+                div.className = "bg-slate-50 p-3 rounded-xl border flex justify-between items-center";
+                div.innerHTML = `
+                    <span class="text-xs font-bold text-slate-700">Jumlah Soal (${cb.value})</span>
+                    <input type="number" min="1" max="20" value="5" class="w-24 bg-white border rounded-lg p-2 text-center text-sm font-bold text-indigo-600 jml-mapel-pen-input" data-jenis="${cb.value}">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleMapelSetupSoalKet() {
+            const container = document.getElementById('container-mapel-soal-ket');
+            container.innerHTML = '';
+            const checked = document.querySelectorAll('input[name="jenis-ket-mapel"]:checked');
+            checked.forEach(cb => {
+                let div = document.createElement('div');
+                div.className = "bg-slate-50 p-3 rounded-xl border flex justify-between items-center";
+                div.innerHTML = `
+                    <span class="text-xs font-bold text-slate-700">Jumlah Soal Keterampilan (${cb.value})</span>
+                    <input type="number" min="1" max="20" value="3" class="w-24 bg-white border rounded-lg p-2 text-center text-sm font-bold text-indigo-600 jml-mapel-ket-input" data-jenis="${cb.value}">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function lanjutKeLembarPenilaianMapel() {
+            const tpPen = document.getElementById('tp-pen-mapel').value.trim();
+            const tpKet = document.getElementById('tp-ket-mapel').value.trim();
+            const checkedPen = document.querySelectorAll('input[name="jenis-pen-mapel"]:checked');
+            const checkedKet = document.querySelectorAll('input[name="jenis-ket-mapel"]:checked');
+            const alertBox = document.getElementById('alert-setup-mapel');
+
+            if (!tpPen || !tpKet || checkedPen.length === 0 || checkedKet.length === 0) {
+                alertBox.classList.remove('hidden');
+                alertBox.innerText = "Peringatan: Lengkapi jenis penilaian dan tujuan pembelajaran pengetahuan & keterampilan!";
+                return;
+            }
+            alertBox.classList.add('hidden');
+
+            let penArr = Array.from(checkedPen).map(cb => cb.value);
+            let ketArr = Array.from(checkedKet).map(cb => cb.value);
+            if (!jenisInfoMapel[activeMapelAndri]) jenisInfoMapel[activeMapelAndri] = {};
+            jenisInfoMapel[activeMapelAndri].penList = penArr;
+            jenisInfoMapel[activeMapelAndri].ketList = ketArr;
+            jenisInfoMapel[activeMapelAndri].tpKetText = tpKet;
+
+            const today = getTodayKey();
+            document.getElementById('input-tanggal-mapel-aktif').value = today;
+            document.getElementById('label-mapel-aktif-mapel').innerText = `Mata Pelajaran: ${activeMapelAndri}`;
+            
+            if (!nilaiDataAndri[activeMapelAndri]) nilaiDataAndri[activeMapelAndri] = {};
+            if (!nilaiDataAndri[activeMapelAndri][today]) {
+                nilaiDataAndri[activeMapelAndri][today] = daftarSiswa.map(() => ({ penScores: {}, ketScores: {}, final: 0 }));
+            }
+
+            renderTabelPenilaianSiswaMapel();
+            switchView('view-form-penilaian-mapel');
+        }
+
+        function renderTabelPenilaianSiswaMapel() {
+            const tbody = document.getElementById('tabel-penilaian-mapel-body');
+            tbody.innerHTML = '';
+            const chosenDate = document.getElementById('input-tanggal-mapel-aktif').value || getTodayKey();
+            const jenisPen = jenisInfoMapel[activeMapelAndri].penList || ['Pilihan Ganda'];
+            const jenisKet = jenisInfoMapel[activeMapelAndri].ketList || ['Praktik Langsung'];
+
+            if (!nilaiDataAndri[activeMapelAndri][chosenDate]) {
+                nilaiDataAndri[activeMapelAndri][chosenDate] = daftarSiswa.map(() => ({ penScores: {}, ketScores: {}, final: 0 }));
+            }
+
+            daftarSiswa.forEach((nama, idx) => {
+                let studentData = nilaiDataAndri[activeMapelAndri][chosenDate][idx];
+
+                let htmlPen = jenisPen.map(j => {
+                    let jmlSoal = 5;
+                    const jmlInp = document.querySelector(`.jml-mapel-pen-input[data-jenis="${j}"]`);
+                    if (jmlInp) jmlSoal = parseInt(jmlInp.value) || 5;
+
+                    if (!studentData.penScores[j]) studentData.penScores[j] = new Array(jmlSoal).fill(0);
+                    
+                    let btns = studentData.penScores[j].map((skor, sIdx) => {
+                        let col = j === 'Pilihan Ganda' ? (skor > 0 ? 'bg-emerald-600 text-white' : 'bg-slate-200 text-slate-700') : (skor === 3 ? 'bg-emerald-600 text-white' : skor === 2 ? 'bg-amber-500 text-white' : skor === 1 ? 'bg-rose-600 text-white' : 'bg-slate-200 text-slate-700');
+                        return `<button onclick="klikSoalPenMapel('${j}', ${idx}, ${sIdx})" class="m-0.5 px-2 py-1 rounded text-xs font-bold transition ${col}">S${sIdx+1}:${skor}</button>`;
+                    }).join('');
+
+                    return `<div class="bg-slate-50 p-2 border rounded-xl mb-1"><span class="text-[10px] font-bold text-blue-600">${j}</span><div class="flex flex-wrap gap-1">${btns}</div></div>`;
+                }).join('');
+
+                let htmlKet = jenisKet.map(j => {
+                    let jmlSoal = 3;
+                    const jmlInp = document.querySelector(`.jml-mapel-ket-input[data-jenis="${j}"]`);
+                    if (jmlInp) jmlSoal = parseInt(jmlInp.value) || 3;
+
+                    if (!studentData.ketScores[j]) studentData.ketScores[j] = new Array(jmlSoal).fill(0);
+
+                    let selects = studentData.ketScores[j].map((skor, sIdx) => {
+                        return `
+                            <div class="m-0.5 inline-block bg-white p-1.5 rounded border">
+                                <span class="block text-[9px] font-bold text-indigo-600">S${sIdx+1}</span>
+                                <select onchange="updateKetSkorMapel(${idx}, '${j}', ${sIdx}, this.value)" class="bg-slate-50 border rounded p-1 text-[10px] font-bold">
+                                    <option value="0" ${skor===0?'selected':''}>Skor</option>
+                                    <option value="4" ${skor===4?'selected':''}>4</option>
+                                    <option value="3" ${skor===3?'selected':''}>3</option>
+                                    <option value="2" ${skor===2?'selected':''}>2</option>
+                                    <option value="1" ${skor===1?'selected':''}>1</option>
+                                </select>
+                            </div>
+                        `;
+                    }).join('');
+
+                    return `<div class="bg-slate-50 p-2 border rounded-xl mb-1"><span class="text-[10px] font-bold text-indigo-600">${j}</span><div>${selects}</div></div>`;
+                }).join('');
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-500 border-r">${idx + 1}</td>
+                    <td class="p-4 font-medium text-slate-900 border-r">${nama}</td>
+                    <td class="p-4">${htmlPen}</td>
+                    <td class="p-4">${htmlKet}</td>
+                    <td class="p-4 text-center font-extrabold text-blue-600" id="mapel_final_${idx}">
+                        ${studentData.final.toFixed(1)}
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function klikSoalPenMapel(jenis, idx, sIdx) {
+            const chosenDate = document.getElementById('input-tanggal-mapel-aktif').value || getTodayKey();
+            let studentData = nilaiDataAndri[activeMapelAndri][chosenDate][idx];
+            let current = studentData.penScores[jenis][sIdx];
+
+            if (jenis === 'Pilihan Ganda') {
+                current = current === 0 ? 1 : 0;
+            } else {
+                if (current === 0) current = 3;
+                else if (current === 3) current = 2;
+                else if (current === 2) current = 1;
+                else current = 0;
+            }
+
+            studentData.penScores[jenis][sIdx] = current;
+            hitungNilaiMapelSiswa(idx, chosenDate);
+            renderTabelPenilaianSiswaMapel();
+        }
+
+        function updateKetSkorMapel(idx, jenis, sIdx, val) {
+            const chosenDate = document.getElementById('input-tanggal-mapel-aktif').value || getTodayKey();
+            let studentData = nilaiDataAndri[activeMapelAndri][chosenDate][idx];
+            studentData.ketScores[jenis][sIdx] = parseInt(val) || 0;
+            hitungNilaiMapelSiswa(idx, chosenDate);
+            renderTabelPenilaianSiswaMapel();
+        }
+
+        function hitungNilaiMapelSiswa(idx, chosenDate) {
+            let d = nilaiDataAndri[activeMapelAndri][chosenDate][idx];
+            let penKeys = Object.keys(d.penScores);
+            let totalPen = 0, maxPen = 0;
+            penKeys.forEach(k => {
+                d.penScores[k].forEach(v => { totalPen += v; maxPen += 3; });
+            });
+            let penPersen = maxPen > 0 ? (totalPen / maxPen) * 100 : 0;
+
+            let ketKeys = Object.keys(d.ketScores || {});
+            let totalKet = 0, maxKet = 0;
+            ketKeys.forEach(k => {
+                d.ketScores[k].forEach(v => { totalKet += v; maxKet += 4; });
+            });
+            let ketPersen = maxKet > 0 ? (totalKet / maxKet) * 100 : 0;
+
+            let final = (0.7 * penPersen) + (0.3 * ketPersen);
+            d.final = isNaN(final) ? 0 : final;
+        }
+
+        // Tombol simpan guru mapel tetap berada di lembar penilaian sesuai instruksi
+        function simpanNilaiMapelGuru() {
+            const mapel = activeMapelAndri;
+            const chosenDate = document.getElementById('input-tanggal-mapel-aktif').value || getTodayKey();
+            
+            if (!nilaiDataAndri[mapel] || !nilaiDataAndri[mapel][chosenDate]) return;
+
+            nilaiDataAndri[mapel][chosenDate].forEach((d, idx) => {
+                hitungNilaiMapelSiswa(idx, chosenDate);
+                if (d.final > 0) {
+                    if (!historyNilai[daftarSiswa[idx]]) historyNilai[daftarSiswa[idx]] = {};
+                    if (!historyNilai[daftarSiswa[idx]][mapel]) historyNilai[daftarSiswa[idx]][mapel] = [];
+                    let existing = historyNilai[daftarSiswa[idx]][mapel].find(h => h.date === chosenDate);
+                    let detailText = `Penilaian & Keterampilan ${mapel} Tanggal ${chosenDate}`;
+                    if (existing) {
+                        existing.score = d.final;
+                        existing.detail = detailText;
+                    } else {
+                        historyNilai[daftarSiswa[idx]][mapel].push({ date: chosenDate, score: d.final, detail: detailText });
+                    }
+                }
+            });
+
+            alert("Nilai berhasil disimpan di tempatnya masing-masing!");
+            initRekapNilai();
+            initAnalisis();
+        }
+
+        function gantiTanggalMapelAktif(dateVal) {
+            if (!dateVal) return;
+            if (!nilaiDataAndri[activeMapelAndri]) nilaiDataAndri[activeMapelAndri] = {};
+            if (!nilaiDataAndri[activeMapelAndri][dateVal]) {
+                nilaiDataAndri[activeMapelAndri][dateVal] = daftarSiswa.map(() => ({ penScores: {}, ketScores: {}, final: 0 }));
+            }
+            renderTabelPenilaianSiswaMapel();
+        }
+
+        function bukaRekapKhususMapel() {
+            renderRekapKhususMapel();
+            switchView('view-rekap-khusus-mapel');
+        }
+
+        function renderRekapKhususMapel() {
+            const tbody = document.getElementById('tabel-rekap-khusus-mapel-body');
+            if (!tbody || !activeGuruMapel) return;
+            tbody.innerHTML = '';
+            const mapel = activeGuruMapel.mapel;
+            const chosenArsipTgl = document.getElementById('input-rekap-mapel-arsip-tgl').value || getTodayKey();
+
+            document.getElementById('label-rekap-khusus-mapel-title').innerText = `Rekap Nilai: ${mapel}`;
+
+            daftarSiswa.forEach((nama, idx) => {
+                let records = (historyNilai[nama] && historyNilai[nama][mapel]) ? historyNilai[nama][mapel] : [];
+                
+                // Kalkulasi nilai rata-rata dari hasil penilaian yang disimpan dengan melihat tanggal/bulan/tahun arsip terpilih
+                let filteredRecs = records.filter(r => r.date === chosenArsipTgl);
+                let targetScore = 0;
+                let targetDate = chosenArsipTgl;
+
+                if (filteredRecs.length > 0) {
+                    let sum = 0;
+                    filteredRecs.forEach(r => sum += r.score);
+                    targetScore = sum / filteredRecs.length;
+                } else if (records.length > 0) {
+                    // Jika tanggal spesifik belum ada, ambil rata-rata dari seluruh history (atau nilai terakhir)
+                    let sum = 0;
+                    records.forEach(r => sum += r.score);
+                    targetScore = sum / records.length;
+                    targetDate = records[records.length - 1].date;
+                }
+
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-4 font-semibold text-slate-500">${idx + 1}</td>
+                    <td class="p-4 font-medium text-slate-900">${nama}</td>
+                    <td class="p-4 text-center font-bold text-indigo-600 cursor-pointer underline hover:text-blue-600" onclick='bukaDetailNilai("${nama}", "${mapel}", ${targetScore}, "${targetDate}", "Arsip Rekap Mapel")'>${targetScore > 0 ? targetScore.toFixed(1) : '-'}</td>
+                    <td class="p-4 text-center text-xs text-slate-500">${targetDate}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function bukaModalRekapUlangMapel() {
+            document.getElementById('modal-rekap-ulang-mapel').classList.remove('hidden');
+        }
+
+        function prosesRekapUlangMapelMulai() {
+            const tgl = document.getElementById('modal-tanggal-rekap-ulang').value;
+            if (!tgl) {
+                alert("Pilih tanggal rekap ulang terlebih dahulu.");
+                return;
+            }
+            document.getElementById('input-tanggal-mapel-aktif').value = tgl;
+            document.getElementById('modal-rekap-ulang-mapel').classList.add('hidden');
+            gantiTanggalMapelAktif(tgl);
+            renderTabelPenilaianSiswaMapel();
+            switchView('view-form-penilaian-mapel');
+        }
+
+        function pindahKeHariIniMapel() {
+            const today = getTodayKey();
+            document.getElementById('input-tanggal-mapel-aktif').value = today;
+            gantiTanggalMapelAktif(today);
+            renderTabelPenilaianSiswaMapel();
+            alert("Berpindah ke rekap penilaian hari ini.");
+        }
+
+        // --- PENILAIAN GURU KELAS (Andri) ---
+        function initMapelPenilaian() {
+            const container = document.getElementById('pilihan-mapel-container');
+            container.innerHTML = '';
+            daftarMapelAndri.forEach(mapel => {
+                let card = document.createElement('div');
+                card.className = "bg-white p-6 rounded-2xl shadow-sm border border-slate-200 hover:border-blue-500 hover:shadow-md cursor-pointer transition-all";
+                card.onclick = () => bukaSetupPengetahuan(mapel);
+                card.innerHTML = `
+                    <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 flex items-center justify-center font-bold mb-4">📖</div>
+                    <h3 class="text-lg font-bold text-slate-900">${mapel}</h3>
+                    <p class="text-slate-500 text-sm mt-1">Klik untuk setup & input penilaian mata pelajaran ${mapel}.</p>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function bukaSetupPengetahuan(mapel) {
+            activeMapelAndri = mapel;
+            document.getElementById('label-mapel-pengetahuan').innerText = `Mata Pelajaran: ${mapel}`;
+            switchView('view-setup-pengetahuan');
+        }
+
+        function toggleSetupSoalInputs() {
+            const container = document.getElementById('container-input-soal-pengetahuan');
+            container.innerHTML = '';
+            const checked = document.querySelectorAll('input[name="jenis-pengetahuan"]:checked');
+            
+            checked.forEach(cb => {
+                let div = document.createElement('div');
+                div.className = "bg-slate-50 p-3 rounded-xl border flex justify-between items-center";
+                div.innerHTML = `
+                    <span class="text-xs font-bold text-slate-700">Jumlah Soal (${cb.value})</span>
+                    <input type="number" min="1" max="20" value="5" class="w-24 bg-white border rounded-lg p-2 text-center text-sm font-bold text-blue-600 jml-soal-pen-input" data-jenis="${cb.value}">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function toggleSetupSoalKetInputs() {
+            const container = document.getElementById('container-input-soal-keterampilan');
+            container.innerHTML = '';
+            const checked = document.querySelectorAll('input[name="jenis-keterampilan"]:checked');
+            
+            checked.forEach(cb => {
+                let div = document.createElement('div');
+                div.className = "bg-slate-50 p-3 rounded-xl border flex justify-between items-center";
+                div.innerHTML = `
+                    <span class="text-xs font-bold text-slate-700">Jumlah Soal Keterampilan (${cb.value})</span>
+                    <input type="number" min="1" max="20" value="3" class="w-24 bg-white border rounded-lg p-2 text-center text-sm font-bold text-indigo-600 jml-soal-ket-input" data-jenis="${cb.value}">
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function lanjutKeSetupKeterampilan() {
+            const tp = document.getElementById('tujuan-pembelajaran-pengetahuan').value.trim();
+            const checkedJenis = document.querySelectorAll('input[name="jenis-pengetahuan"]:checked');
+            const alertBox = document.getElementById('alert-setup-pengetahuan');
+
+            if (!tp || checkedJenis.length === 0) {
+                alertBox.classList.remove('hidden');
+                alertBox.innerText = "Peringatan: Pilih minimal 1 jenis penilaian dan isi Tujuan Pembelajaran Pengetahuan!";
+                return;
+            }
+            alertBox.classList.add('hidden');
+
+            let jenisArr = Array.from(checkedJenis).map(cb => cb.value);
+            if (!jenisInfoMapel[activeMapelAndri]) jenisInfoMapel[activeMapelAndri] = {};
+            jenisInfoMapel[activeMapelAndri].penList = jenisArr;
+
+            document.getElementById('label-mapel-keterampilan').innerText = `Mata Pelajaran: ${activeMapelAndri}`;
+            switchView('view-setup-keterampilan');
+        }
+
+        function lanjutKeInputPengetahuanSiswa() {
+            const tpKet = document.getElementById('tujuan-pembelajaran-keterampilan').value.trim();
+            const checkedKet = document.querySelectorAll('input[name="jenis-keterampilan"]:checked');
+            const alertBox = document.getElementById('alert-setup-keterampilan');
+
+            if (!tpKet || checkedKet.length === 0) {
+                alertBox.classList.remove('hidden');
+                alertBox.innerText = "Peringatan: Pilih jenis penilaian keterampilan dan isi Tujuan Pembelajaran Keterampilan!";
+                return;
+            }
+            alertBox.classList.add('hidden');
+
+            let ketArr = Array.from(checkedKet).map(cb => cb.value);
+            jenisInfoMapel[activeMapelAndri].ketList = ketArr;
+            jenisInfoMapel[activeMapelAndri].tpKetText = tpKet;
+
+            document.getElementById('label-mapel-eksekusi-pen').innerText = `Mata Pelajaran: ${activeMapelAndri}`;
+            const today = getTodayKey();
+            if (!nilaiDataAndri[activeMapelAndri]) nilaiDataAndri[activeMapelAndri] = {};
+            if (!nilaiDataAndri[activeMapelAndri][today]) {
+                nilaiDataAndri[activeMapelAndri][today] = daftarSiswa.map(() => ({ penScores: {}, ketScores: {}, final: 0 }));
+            }
+            renderTabelFormPenilaianPengetahuan();
+            switchView('view-form-penilaian-pengetahuan');
+        }
+
+        function simpanFinalNilaiAndri(isAuto = false) {
+            const today = getTodayKey();
+            const mapel = activeMapelAndri;
+            
+            if (nilaiDataAndri[mapel] && nilaiDataAndri[mapel][today]) {
+                nilaiDataAndri[mapel][today].forEach((d, idx) => {
+                    let penKeys = Object.keys(d.penScores);
+                    let totalPenPerolehan = 0;
+                    let maxPenMaksimal = 0;
+                    penKeys.forEach(k => {
+                        let arr = d.penScores[k];
+                        arr.forEach(val => {
+                            totalPenPerolehan += val;
+                            maxPenMaksimal += 3; 
+                        });
+                    });
+                    let nilaiPenPersen = maxPenMaksimal > 0 ? (totalPenPerolehan / maxPenMaksimal) * 100 : 0;
+
+                    let ketKeys = Object.keys(d.ketScores || {});
+                    let totalKetPerolehan = 0;
+                    let maxKetMaksimal = 0;
+                    ketKeys.forEach(k => {
+                        let arr = d.ketScores[k];
+                        arr.forEach(val => {
+                            totalKetPerolehan += val;
+                            maxKetMaksimal += 4; 
+                        });
+                    });
+                    let nilaiKetPersen = maxKetMaksimal > 0 ? (totalKetPerolehan / maxKetMaksimal) * 100 : 0;
+
+                    let final = (0.7 * nilaiPenPersen) + (0.3 * nilaiKetPersen);
+                    d.final = isNaN(final) ? 0 : final;
+
+                    if (d.final > 0) {
+                        if (!historyNilai[daftarSiswa[idx]]) historyNilai[daftarSiswa[idx]] = {};
+                        if (!historyNilai[daftarSiswa[idx]][mapel]) historyNilai[daftarSiswa[idx]][mapel] = [];
+                        let existing = historyNilai[daftarSiswa[idx]][mapel].find(h => h.date === today);
+                        let detailText = `Pengetahuan: ${nilaiPenPersen.toFixed(1)}% | Keterampilan: ${nilaiKetPersen.toFixed(1)}%`;
+                        if (existing) {
+                            existing.score = d.final;
+                            existing.detail = detailText;
+                        } else {
+                            historyNilai[daftarSiswa[idx]][mapel].push({ date: today, score: d.final, detail: detailText });
+                        }
+                    }
+                });
+            }
+
+            if (!isAuto) alert("Data berhasil disigned dan disimpan di tempatnya masing-masing!");
+            initRekapNilai();
+            initAnalisis();
+            if (!isAuto) switchView('view-penilaian');
+        }
+
+        function bukaRekapMapelSingle() {
+            selectedLampauDate = document.getElementById('input-rekap-nilai-tanggal').value;
+            const today = getTodayKey();
+
+            if (!selectedLampauDate) {
+                alert("Pilih tanggal terlebih dahulu.");
+                return;
+            }
+
+            if (selectedLampauDate === today) {
+                alert("Untuk tanggal hari ini (real-time), rekap nilai harus dilakukan langsung melalui halaman Penilaian.");
+                return;
+            }
+
+            // Langsung arahkan guru mapel ke form rekap masa lampau (hanya untuk mapel yang diampunya)
+            if (activeGuruMapel) {
+                selectedMultiMapelList = [activeGuruMapel.mapel];
+            } else {
+                selectedMultiMapelList = [...allMapelGlobal];
+            }
+
+            document.getElementById('label-multimapel-date').innerText = `Rekap Masa Lampau - Tanggal: ${selectedLampauDate}`;
+            renderTabelFormMultiMapel();
+            switchView('view-form-rekap-multimapel');
+        }
+
+        function renderTabelFormMultiMapel() {
+            const headerTr = document.getElementById('header-multimapel-table');
+            let hHtml = `<th class="p-4 border-r">No</th><th class="p-4 border-r">Nama Siswa</th>`;
+            selectedMultiMapelList.forEach(m => {
+                hHtml += `<th class="p-4 text-center">${m} (0-100)</th>`;
+            });
+            headerTr.innerHTML = hHtml;
+
+            const tbody = document.getElementById('tabel-multimapel-body');
+            tbody.innerHTML = '';
+
+            daftarSiswa.forEach((nama, idx) => {
+                let tr = document.createElement('tr');
+                let tdHtml = `<td class="p-4 font-semibold text-slate-500 border-r">${idx + 1}</td><td class="p-4 font-medium text-slate-900 border-r">${nama}</td>`;
+                
+                selectedMultiMapelList.forEach(m => {
+                    let existingVal = "";
+                    if (historyNilai[nama] && historyNilai[nama][m]) {
+                        let f = historyNilai[nama][m].find(h => h.date === selectedLampauDate);
+                        if (f) existingVal = f.score;
+                    }
+                    tdHtml += `
+                        <td class="p-4 text-center">
+                            <input type="number" min="0" max="100" value="${existingVal}" id="multim_${m}_${idx}" class="w-24 bg-slate-50 border rounded-lg p-2 text-center text-sm font-bold text-blue-600" placeholder="0-100">
+                        </td>
+                    `;
+                });
+                tr.innerHTML = tdHtml;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function simpanMultiMapelLampau() {
+            selectedMultiMapelList.forEach(mapel => {
+                daftarSiswa.forEach((nama, idx) => {
+                    let inp = document.getElementById(`multim_${mapel}_${idx}`);
+                    if (inp && inp.value.trim() !== '') {
+                        let score = parseFloat(inp.value) || 0;
+                        if (!historyNilai[nama]) historyNilai[nama] = {};
+                        if (!historyNilai[nama][mapel]) historyNilai[nama][mapel] = [];
+                        let existing = historyNilai[nama][mapel].find(h => h.date === selectedLampauDate);
+                        let detailText = `Rekap Masa Lampau`;
+                        if (existing) {
+                            existing.score = score;
+                            existing.detail = detailText;
+                        } else {
+                            historyNilai[nama][mapel].push({ date: selectedLampauDate, score: score, detail: detailText });
+                        }
+                    }
+                });
+            });
+
+            alert("Data berhasil disimpan di tempatnya masing-masing!");
+            initRekapNilai();
+            initAnalisis();
+            if (activeGuruMapel) {
+                switchView('view-rekap-khusus-mapel');
+            } else {
+                switchView('view-rekap-nilai');
+            }
+        }
+
+        function setRekapHariIni() {
+            const today = getTodayKey();
+            document.getElementById('input-rekap-nilai-tanggal').value = today;
+            initRekapNilai();
+        }
+
+        function initRekapNilai() {
+            const tbody = document.getElementById('tabel-rekap-nilai-body');
+            const headerTr = document.getElementById('header-rekap-nilai-table');
+            if (!tbody || !headerTr) return;
+
+            const chosenDate = document.getElementById('input-rekap-nilai-tanggal').value || getTodayKey();
+            
+            const dateObj = new Date(chosenDate);
+            const dayOfWeek = isNaN(dateObj.getDay()) ? new Date().getDay() : dateObj.getDay();
+            let jadwalHariIni = jadwalPelajaran[dayOfWeek] || allMapelGlobal;
+
+            if (activeGuruMapel) {
+                jadwalHariIni = [activeGuruMapel.mapel];
+            }
+
+            let hHtml = `<th class="p-4">No</th><th class="p-4">Nama Siswa</th>`;
+            jadwalHariIni.forEach(m => {
+                hHtml += `<th class="p-4 text-center">${m}</th>`;
+            });
+            headerTr.innerHTML = hHtml;
+
+            tbody.innerHTML = '';
+            daftarSiswa.forEach((nama, idx) => {
+                let tr = document.createElement('tr');
+                let tds = `<td class="p-4 font-semibold text-slate-500">${idx + 1}</td><td class="p-4 font-medium text-slate-900">${nama}</td>`;
+                
+                jadwalHariIni.forEach(mapel => {
+                    let score = 0;
+                    let targetRecord = null;
+
+                    if (historyNilai[nama] && historyNilai[nama][mapel]) {
+                        let found = historyNilai[nama][mapel].find(h => h.date === chosenDate);
+                        if (found) {
+                            score = found.score;
+                            targetRecord = found;
+                        }
+                    }
+
+                    if (score > 0) {
+                        tds += `<td class="p-4 text-center font-bold text-slate-700 cursor-pointer underline hover:text-blue-600" onclick='bukaDetailNilai("${nama}", "${mapel}", ${score}, "${targetRecord ? targetRecord.date : chosenDate}", "${targetRecord ? targetRecord.detail : '-'}")'>${score.toFixed(1)}</td>`;
+                    } else {
+                        tds += `<td class="p-4 text-center text-slate-400">-</td>`;
+                    }
+                });
+
+                tr.innerHTML = tds;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function bukaDetailNilai(nama, mapel, score, date, detail) {
+            document.getElementById('modal-detail-title').innerText = `Detail Penilaian: ${mapel} (${nama})`;
+            document.getElementById('modal-detail-content').innerHTML = `
+                <p><strong>Tanggal Penilaian:</strong> ${date}</p>
+                <p><strong>Nilai Akhir:</strong> ${score.toFixed(1)}</p>
+                <p><strong>Rincian:</strong> ${detail}</p>
+            `;
+            document.getElementById('modal-detail-nilai').classList.remove('hidden');
+        }
+
+        function initAnalisis() {
+            const tbody = document.getElementById('tabel-analisis-body');
+            if (!tbody) return;
+            tbody.innerHTML = '';
+
+            daftarSiswa.forEach((nama) => {
+                let tr = document.createElement('tr');
+                let rankSign = "";
+                if (isRankingDisplayed && rankingGlobal[nama]) {
+                    if (rankingGlobal[nama] <= 3) {
+                        rankSign = ` ⭐ (Rank ${rankingGlobal[nama]})`;
+                    } else {
+                        rankSign = ` (Rank ${rankingGlobal[nama]})`;
+                    }
+                }
+
+                let tds = `<td class="p-4 font-semibold text-slate-500">${daftarSiswa.indexOf(nama) + 1}</td><td class="p-4 font-medium text-slate-900">${nama} ${rankSign}</td>`;
+                
+                let totalScore = 0;
+                let countMapelWithScore = 0;
+
+                allMapelGlobal.forEach(mapel => {
+                    let mapelAvg = 0;
+                    if (historyNilai[nama] && historyNilai[nama][mapel] && historyNilai[nama][mapel].length > 0) {
+                        let sumM = 0;
+                        historyNilai[nama][mapel].forEach(rec => sumM += rec.score);
+                        mapelAvg = sumM / historyNilai[nama][mapel].length; 
+                        totalScore += mapelAvg;
+                        countMapelWithScore++;
+                    }
+                    tds += `<td class="p-4 text-center text-slate-600 cursor-pointer underline hover:text-blue-600" onclick="bukaHistorySiswaDariAnalisis('${nama}', '${mapel}')">${mapelAvg > 0 ? mapelAvg.toFixed(1) : '-'}</td>`;
+                });
+
+                let rataRata = countMapelWithScore > 0 ? (totalScore / allMapelGlobal.length) : 0;
+                tds += `<td class="p-4 text-center font-extrabold text-blue-600">${rataRata > 0 ? rataRata.toFixed(1) : '-'}</td>`;
+                tr.innerHTML = tds;
+                tbody.appendChild(tr);
+            });
+        }
+
+        function bukaHistorySiswaDariAnalisis(namaSiswa, mapel) {
+            historyAsalView = "analisis";
+            bukaHistorySiswa(namaSiswa, mapel);
+        }
+
+        function kembaliDariHistory() {
+            if (historyAsalView === "analisis") {
+                switchView('view-analisis');
+            } else {
+                switchView('view-portal-siswa');
+            }
+        }
+
+        function hitungDanTampilkanRangking() {
+            let calculated = daftarSiswa.map(name => {
+                let sum = 0;
+                allMapelGlobal.forEach(m => {
+                    if (historyNilai[name] && historyNilai[name][m] && historyNilai[name][m].length > 0) {
+                        let sumM = 0;
+                        historyNilai[name][m].forEach(rec => sumM += rec.score);
+                        sum += (sumM / historyNilai[name][m].length);
+                    }
+                });
+                return { name: name, avg: sum / allMapelGlobal.length };
+            });
+
+            calculated.sort((a, b) => b.avg - a.avg);
+            rankingGlobal = {};
+            calculated.forEach((item, index) => {
+                rankingGlobal[item.name] = index + 1;
+            });
+            isRankingDisplayed = true;
+
+            const tbody = document.getElementById('tabel-ranking-body');
+            tbody.innerHTML = '';
+            calculated.forEach((item, index) => {
+                let rank = index + 1;
+                let star = rank <= 3 ? " ⭐⭐⭐" : "";
+                let tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="p-3 font-extrabold text-blue-600"># ${rank} ${star}</td>
+                    <td class="p-3 font-medium text-slate-900">${item.name}</td>
+                    <td class="p-3 text-center font-bold text-slate-700">${item.avg.toFixed(1)}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            initAnalisis();
+            alert("Data berhasil disimpan di tempatnya masing-masing!");
+        }
+
+        function hapusAnalisisRangking() {
+            rankingGlobal = {};
+            isRankingDisplayed = false;
+            document.getElementById('tabel-ranking-body').innerHTML = `<tr><td colspan="3" class="p-4 text-center text-slate-400">Belum ada analisis ranking yang ditampilkan.</td></tr>`;
+            initAnalisis();
+            alert("Analisis ranking berhasil dihapus!");
+        }
+
+        function loadPortalSiswa(namaSiswa) {
+            document.getElementById('nama-siswa-login').innerText = `Selamat Datang, ${namaSiswa}`;
+            
+            const dayOfWeek = new Date().getDay(); 
+            const hariNamaArr = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            document.getElementById('label-hari-ini').innerText = `Hari Ini: ${hariNamaArr[dayOfWeek]}`;
+            
+            const jadwalHariIni = jadwalPelajaran[dayOfWeek] || ["Belajar Mandiri"];
+            const badgeJadwal = document.getElementById('badge-jadwal-mapel');
+            badgeJadwal.innerHTML = jadwalHariIni.map(m => `<span class="bg-white text-emerald-800 text-xs font-bold px-3 py-1 rounded-lg border border-emerald-200 shadow-sm">${m}</span>`).join('');
+
+            const tbody = document.getElementById('tabel-nilai-siswa-body');
+            tbody.innerHTML = '';
+
+            allMapelGlobal.forEach(mapel => {
+                let score = 0;
+                if (historyNilai[namaSiswa] && historyNilai[namaSiswa][mapel] && historyNilai[namaSiswa][mapel].length > 0) {
+                    let sumM = 0;
+                    historyNilai[namaSiswa][mapel].forEach(rec => sumM += rec.score);
+                    score = sumM / historyNilai[namaSiswa][mapel].length;
+                }
+
+                let tr = document.createElement('tr');
+                tr.className = "hover:bg-slate-50 cursor-pointer transition";
+                tr.onclick = () => { historyAsalView = "portal"; bukaHistorySiswa(namaSiswa, mapel); };
+                tr.innerHTML = `
+                    <td class="p-3 font-medium text-blue-600 underline">${mapel}</td>
+                    <td class="p-3 text-center font-bold text-slate-800">${score > 0 ? score.toFixed(1) : 'Belum Ada Nilai'}</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            let rankDisplay = "-";
+            if (isRankingDisplayed && rankingGlobal[namaSiswa]) {
+                let r = rankingGlobal[namaSiswa];
+                let star = r <= 3 ? " ⭐" : "";
+                rankDisplay = `# ${r} ${star}`;
+            }
+            document.getElementById('badge-ranking').innerText = rankDisplay;
+        }
+
+        function bukaHistorySiswa(namaSiswa, mapel) {
+            document.getElementById('history-mapel-title').innerText = `Riwayat Penilaian: ${mapel} (${namaSiswa})`;
+            const container = document.getElementById('container-history-card');
+            container.innerHTML = '';
+
+            let records = (historyNilai[namaSiswa] && historyNilai[namaSiswa][mapel]) ? historyNilai[namaSiswa][mapel] : [];
+
+            if (records.length === 0) {
+                container.innerHTML = `<div class="bg-white p-6 rounded-2xl border text-center text-slate-500">Belum ada riwayat penilaian untuk mata pelajaran ini.</div>`;
+            } else {
+                records.forEach(rec => {
+                    let card = document.createElement('div');
+                    card.className = "bg-white p-6 rounded-2xl shadow-sm border border-slate-200 flex justify-between items-center";
+                    card.innerHTML = `
+                        <div>
+                            <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Tanggal Penilaian</span>
+                            <p class="text-base font-bold text-slate-800 mt-1">${rec.date}</p>
+                            <p class="text-xs text-slate-500 mt-0.5">${rec.detail || ''}</p>
+                        </div>
+                        <div class="text-right">
+                            <span class="text-xs font-bold text-blue-600 uppercase tracking-wider">Nilai Diperoleh</span>
+                            <p class="text-2xl font-extrabold text-blue-700 mt-1">${rec.score.toFixed(1)}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            }
+            switchView('view-history-siswa');
+        }
+    </script>
+</body>
+</html>
